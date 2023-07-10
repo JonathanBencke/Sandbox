@@ -2,148 +2,131 @@ package associatividade;
 
 import java.util.Scanner;
 
-/**
- *
- * @author Jonathan
- */
 public class Associatividade {
 
     public static void main(String[] args) {
-        
-	//variaveis
-        int elementos = 0, posicaoA = 0, posicaoB = 0;;
-        boolean assoc = false;
-        String A, B, finalB = "B", finalA = "A";
-		
-        Scanner s = new Scanner(System.in);
+        int numElementos = 0, posicaoA = 0, posicaoB = 0;
+        boolean associativa = false;
+        String operandoA, operandoB, resultadoB = "B", resultadoA = "A";
 
-		//leitura da quantidade de numero de elementos
+        Scanner scanner = new Scanner(System.in);
+
+        // Solicita ao usuário a quantidade de elementos
         do {
-            System.out.println("Numero de elementos:");
-            elementos = s.nextInt();
-            s.nextLine();
-        } while (elementos == 0);
-		
-		//cria vetor com a quantidade de elementos informada
-        String[] vet = new String[elementos];
+            System.out.println("Número de elementos:");
+            numElementos = scanner.nextInt();
+            scanner.nextLine();
+        } while (numElementos == 0);
 
-		//realiza a leitura dos elementos e os coloca no vetor
+        String[] elementos = new String[numElementos];
+
         System.out.println("Informe os elementos:");
-        for (int x = 0; x < elementos; x++) {
 
-            System.out.println("Elemento nº" + x + ": ");
-            vet[x] = s.nextLine();
+        // Lê os elementos informados pelo usuário e os armazena em um vetor
+        for (int i = 0; i < numElementos; i++) {
+            System.out.println("Elemento nº" + i + ": ");
+            elementos[i] = scanner.nextLine();
+        }
 
-        }
-		
-		//mostra a tabela para o usuario preenchida
-        for (int x = 0; x < elementos; x++) {
-            if (x == 0) {
-                System.out.print("|*|");
-            }
-            System.out.print("|" + vet[x] + "|");
-        }
-        for (int x = 0; x < elementos; x++) {
-            if (x == 0) {
-                System.out.print("\n");
-            }
-            System.out.println("|" + vet[x] + "|");
-        }
-		
-		
-		//cria um vetor bidimensional para a entrada dos resulatado entre as operaçoes
-        String[][] vetResultado = new String[elementos][elementos];
-        for (int x = 0; x < elementos; x++) {
-            for (int y = 0; y < elementos; y++) {
-                System.out.println("Operação entre " + x + " e " + y + ":");
-                vetResultado[x][y] = s.nextLine();
+        exibirTabela(elementos);
+
+        String[][] tabelaResultado = new String[numElementos][numElementos];
+
+        // Lê os resultados das operações e preenche a tabela de resultados
+        for (int i = 0; i < numElementos; i++) {
+            for (int j = 0; j < numElementos; j++) {
+                System.out.println("Operação entre " + i + " e " + j + ":");
+                tabelaResultado[i][j] = scanner.nextLine();
             }
         }
 
-		//mostra a tabela montada para o usuario
-        System.out.print("|*|");
-        for (int x = 0; x < elementos; x++) {
-            System.out.print("|" + vet[x] + "|");
-        }
-        for (int x = 0; x < elementos; x++) {
-            for (int y = 0; y < elementos; y++) {
-                if (y == 0) {
-                    System.out.print("\n|" + vet[x] + "|");
-                }
-                System.out.print("|" + vetResultado[x][y] + "|");
+        exibirTabela(elementos, tabelaResultado);
 
-            }
-        }
+        System.out.println("\nAnalisando...");
 
-		//começa a vericaçao para ver se a tabela e associativa
-        
-		System.out.println("\nAnalisando...");
-        
-		
-		//OPERACAO (a * b) * c = a * (b * c) 
-
-        for (int x = 0; x < elementos; x++) {
-            for (int y = 0; y < elementos; y++) {
-                for (int s = 0; s < elementos; s++) {
-					
-					//mostra o calculo atual sendo analisada
+        // Verifica a associatividade
+        for (int i = 0; i < numElementos; i++) {
+            for (int j = 0; j < numElementos; j++) {
+                for (int k = 0; k < numElementos; k++) {
                     System.out.println("//////////////////////////////////////////////////////\n");
                     System.out.println("(a*b)*c=a*(b*c)");
-                    System.out.println("(" + vet[x] + "*" + vet[y] + ")*" + vet[s] + "=" + vet[x] + "*(" + vet[y] + "*" + vet[s] + ")");
+                    System.out.println("(" + elementos[i] + "*" + elementos[j] + ")*" + elementos[k] + "=" + elementos[i] + "*(" + elementos[j] + "*" + elementos[k] + ")");
 
-					//coloca a busca de a * b em A
-                    A = vetResultado[x][y];
-					
-					//mostra o resultado da operacao entra a e b para o usuario
-                    System.out.println("a*b=" + A);
-					
-					//busca a posicao do A no vetor de elementos
-                    for (int w = 0; w < elementos; w++) {
-                       System.out.println(vet[w]+"=="+A);
-                        if (vet[w].equals(A)) {
-                            System.out.println("Posicao: "+w);
+                    operandoA = tabelaResultado[i][j];
+                    System.out.println("a*b=" + operandoA);
+
+                    // Busca a posição do operandoA no vetor de elementos
+                    for (int w = 0; w < numElementos; w++) {
+                        System.out.println(elementos[w] + "==" + operandoA);
+                        if (elementos[w].equals(operandoA)) {
+                            System.out.println("Posição: " + w);
                             posicaoA = w;
-                            finalA = vetResultado[posicaoA][s];
-                            System.out.println("Final A: "+finalA);
-                            System.out.println("(a*b)*c=" + A);
+                            resultadoA = tabelaResultado[posicaoA][k];
+                            System.out.println("Resultado A: " + resultadoA);
+                            System.out.println("(a*b)*c=" + operandoA);
                         }
                     }
-					
-                    
 
-                    B = vetResultado[y][s];
-                    System.out.println("b*c=" + B);
-                    
-                    for (int w = 0; w < elementos; w++) {
-                        if (vet[w].equals(B)) {
+                    operandoB = tabelaResultado[j][k];
+                    System.out.println("b*c=" + operandoB);
+
+                    // Busca a posição do operandoB no vetor de elementos
+                    for (int w = 0; w < numElementos; w++) {
+                        if (elementos[w].equals(operandoB)) {
                             posicaoB = w;
-                            finalB = vetResultado[x][posicaoB];
-                            System.out.println("a*(b*c)=" + B);
+                            resultadoB = tabelaResultado[i][posicaoB];
+                            System.out.println("a*(b*c)=" + operandoB);
                         }
                     }
 
-                    if (!finalA.equals(finalB)) {
-
-                        assoc = true;
-                        if("A".equals(finalA) || "B".equals(finalB)){
-                            System.out.println("\nFalha!\n(a*b)*c =! a*(b*c) ou nao pertence ao grupo\n");
-                        }else{
-                            System.out.println("\nFalha!\nA=" + finalA + "!=B=" + finalB + "\n");
-
+                    // Verifica se os resultados finais são diferentes
+                    if (!resultadoA.equals(resultadoB)) {
+                        associativa = true;
+                        if ("A".equals(resultadoA) || "B".equals(resultadoB)) {
+                            System.out.println("\nFalha!\n(a*b)*c =! a*(b*c) ou não pertence ao grupo\n");
+                        } else {
+                            System.out.println("\nFalha!\nA=" + resultadoA + "!=B=" + resultadoB + "\n");
                         }
                     }
-                
-
                 }
             }
-
         }
-		
-		//finaliza a busca mostrando se é ou nao associativa
-        if (assoc) {
+
+        // Exibe o resultado da verificação de associatividade
+        if (associativa) {
             System.out.println("Não é associativa!");
         } else {
             System.out.println("É associativa!");
+        }
+    }
+
+    private static void exibirTabela(String[] elementos) {
+        for (int i = 0; i < elementos.length; i++) {
+            if (i == 0) {
+                System.out.print("|*|");
+            }
+            System.out.print("|" + elementos[i] + "|");
+        }
+        for (int i = 0; i < elementos.length; i++) {
+            if (i == 0) {
+                System.out.print("\n");
+            }
+            System.out.println("|" + elementos[i] + "|");
+        }
+    }
+
+    private static void exibirTabela(String[] elementos, String[][] tabelaResultado) {
+        System.out.print("|*|");
+        for (int i = 0; i < elementos.length; i++) {
+            System.out.print("|" + elementos[i] + "|");
+        }
+        for (int i = 0; i < elementos.length; i++) {
+            for (int j = 0; j < elementos.length; j++) {
+                if (j == 0) {
+                    System.out.print("\n|" + elementos[i] + "|");
+                }
+                System.out.print("|" + tabelaResultado[i][j] + "|");
+            }
         }
     }
 }
